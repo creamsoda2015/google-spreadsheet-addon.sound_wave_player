@@ -1,0 +1,69 @@
+<link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons.css">
+
+<div class="sidebar branding-below">
+  <form id="addonForm">
+    <div class="block" id="button-bar">
+      <button type="button" class="blue" id="soundPlayButton" onclick="soundDataLoad();" title="play">Play</button>
+      <button type="button" class="blue" id="soundStopButton" onclick="soundStop();" title="stop">Stop</button>
+    </div>
+  </form>
+</div>
+
+<script type="text/javascript">
+
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    var fs = 44100;
+    var bufferSize = 4096;
+    var numOutputs = 1; // mono
+    var numInputs = 0;
+    var context = new AudioContext();
+    var node = undefined;
+    var phase = 0;
+    var loopDataSource = [];
+    var loopData = [];
+    
+    function soundPlay(){
+        if(node){
+            soundStop();
+            soundDataLoad();
+            return;
+        }
+        node = context.createScriptProcessor(bufferSize, numInputs, numOutputs);
+        node.onaudioprocess = function(e){
+            var data = e.outputBuffer.getChannelData(0);
+            // need for lower than bufferSize loopData
+            while(loopData.length - phase < bufferSize){
+                loopData = loopData.concat(loopDataSource);
+            }
+            var i = 0;
+            while(i < bufferSize){
+                data[i] = loopData[phase];
+                i++;
+                phase++;
+            }
+        }
+        node.connect(context.destination);  
+    }
+    
+    function soundStop(){
+        phase = 0;
+        loopData = [];
+        node.disconnect();
+        node = undefined;
+    }
+    
+    function soundDataLoad() {
+        google.script.run.withSuccessHandler(success).withFailureHandler(failure).getActiveCell();
+    }
+    
+    function success(values) {
+        loopDataSource = values;
+        loopData = loopDataSource;
+        soundPlay();
+    }
+    
+    function failure(error) {
+        alert(error);
+    }
+    
+</script>
