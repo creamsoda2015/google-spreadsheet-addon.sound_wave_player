@@ -1,6 +1,6 @@
 function onOpen(e) {
   SpreadsheetApp.getUi().createAddonMenu()
-      .addItem('Start', 'showSidebar')
+      .addItem('Show Sidebar', 'showSidebar')
       .addToUi();
 };
 

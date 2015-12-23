@@ -1,10 +1,14 @@
-<link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons.css">
+<link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
 
 <div class="sidebar branding-below">
+  <div class="block">
+    <label for="translated-text"><b>Instruction</b></label>
+    <p>1. Select the range of cells including data that you want to play.</p>
+    <p>2. Click the "Play" button. you will hear the sound.</p>
+  </div>
   <form id="addonForm">
     <div class="block" id="button-bar">
-      <button type="button" class="blue" id="soundPlayButton" onclick="soundDataLoad();" title="play">Play</button>
-      <button type="button" class="blue" id="soundStopButton" onclick="soundStop();" title="stop">Stop</button>
+      <button type="button" class="blue" id="soundActionButton" onclick="soundAction();" title="sound action">Play</button>
     </div>
   </form>
 </div>
@@ -23,11 +27,6 @@
     var loopData = [];
     
     function soundPlay(){
-        if(node){
-            soundStop();
-            soundDataLoad();
-            return;
-        }
         node = context.createScriptProcessor(bufferSize, numInputs, numOutputs);
         node.onaudioprocess = function(e){
             var data = e.outputBuffer.getChannelData(0);
@@ -43,6 +42,7 @@
             }
         }
         node.connect(context.destination);  
+        document.getElementById("soundActionButton").disabled = false;
     }
     
     function soundStop(){
@@ -50,6 +50,18 @@
         loopData = [];
         node.disconnect();
         node = undefined;
+        document.getElementById("soundActionButton").disabled = false;
+    }
+    
+    function soundAction() {
+        document.getElementById("soundActionButton").disabled = true;
+        if(node){
+            document.getElementById("soundActionButton").innerText = "Play";
+            soundStop();
+        } else {
+            document.getElementById("soundActionButton").innerText = "Stop";
+            soundDataLoad();
+        }
     }
     
     function soundDataLoad() {
@@ -64,6 +76,8 @@
     
     function failure(error) {
         alert(error);
+        document.getElementById("soundActionButton").disabled = false;
+        document.getElementById("soundActionButton").innerText = "Play";
     }
     
 </script>
