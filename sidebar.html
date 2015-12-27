@@ -1,44 +1,73 @@
 <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
 
-<div class="sidebar branding-below">
+<style>
+.spacer20 {
+  height: 20px;
+}
+</style>
+
+<div class="sidebar">
+
   <div class="block">
-    <label for="translated-text"><b>Instruction</b></label>
+    <b>Instruction</b>
     <p>1. Select the range of cells including data that you want to play.</p>
     <p>2. Click the "Play" button. you will hear the sound.</p>
   </div>
-  <form id="addonForm">
-    <div class="block" id="button-bar">
-      <button type="button" class="blue" id="soundActionButton" onclick="soundAction();" title="sound action">Play</button>
-    </div>
-  </form>
+  
+  <div class="block" id="button-bar">
+    <button type="button" class="blue" id="soundActionButton" onclick="soundAction();" title="sound action">Play</button>
+  </div>
+  
+  <div class="spacer20"></div>
+  <hr>
+  
+  <div class="block">
+    <b>Settings</b>
+    <p>
+      <input type="checkbox" id="loopCheckBox">
+      <label for="loopCheckBox">Loop</label>
+    </p>
+  </div>
+    
 </div>
 
 <script type="text/javascript">
 
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
-    var fs = 44100;
+
     var bufferSize = 4096;
     var numOutputs = 1; // mono
     var numInputs = 0;
     var context = new AudioContext();
     var node = undefined;
     var phase = 0;
-    var loopDataSource = [];
-    var loopData = [];
+    var dataSource = [];
+    var dataLength = 0;
+    var isLoop = false;
     
     function soundPlay(){
+        isLoop = document.getElementById("loopCheckBox").checked;
         node = context.createScriptProcessor(bufferSize, numInputs, numOutputs);
-        node.onaudioprocess = function(e){
+        node.onaudioprocess = function(e) {
             var data = e.outputBuffer.getChannelData(0);
-            // need for lower than bufferSize loopData
-            while(loopData.length - phase < bufferSize){
-                loopData = loopData.concat(loopDataSource);
-            }
             var i = 0;
-            while(i < bufferSize){
-                data[i] = loopData[phase];
+            var isEnd = false;
+            while (i < bufferSize) {
+                data[i] = dataSource[phase];
                 i++;
                 phase++;
+                if (phase >= dataLength) {
+                    if(isLoop) {
+                        phase = 0;
+                    } else {
+                        isEnd = true;
+                        break;
+                    }
+                }
+            }
+            if (isEnd) {
+                document.getElementById("soundActionButton").innerText = "Play";
+                soundStop();
             }
         }
         node.connect(context.destination);  
@@ -47,7 +76,7 @@
     
     function soundStop(){
         phase = 0;
-        loopData = [];
+        dataSource = [];
         node.disconnect();
         node = undefined;
         document.getElementById("soundActionButton").disabled = false;
@@ -55,7 +84,7 @@
     
     function soundAction() {
         document.getElementById("soundActionButton").disabled = true;
-        if(node){
+        if (node) {
             document.getElementById("soundActionButton").innerText = "Play";
             soundStop();
         } else {
@@ -69,9 +98,14 @@
     }
     
     function success(values) {
-        loopDataSource = values;
-        loopData = loopDataSource;
-        soundPlay();
+        dataSource = JSON.parse(values);
+        dataLength = dataSource.length;
+        if (dataLength > 0) {
+            soundPlay();
+        } else {
+            document.getElementById("soundActionButton").disabled = false;
+            document.getElementById("soundActionButton").innerText = "Play";
+        }
     }
     
     function failure(error) {
