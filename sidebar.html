@@ -1,46 +1,109 @@
 <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
 
 <style>
+.spacer10 {
+  height: 10px;
+}
 .spacer20 {
   height: 20px;
+}
+.display-inline {
+  display: inline;
+}
+.display-none {
+  display: none;
+}
+.control-button {
+  float: left;
+}
+#sampleSheetLoadButton {
+  float: left;
+}
+#controlLoading {
+  float: left;
+  stroke: #444;
+  fill: #444;
+  stroke: #69717d;
+  width: 30px;
+  height: 30px;
+}
+#sampleLoading {
+  float: left;
+  stroke: #444;
+  fill: #444;
+  stroke: #69717d;
+  width: 30px;
+  height: 30px;
+}
+.clear {
+  clear: both;
+}
+.text-right {
+  text-align: right;
 }
 </style>
 
 <div class="sidebar">
 
   <div class="block">
-    <b>Instruction</b>
+    <p><b>Instruction</b></p>
     <p>1. Select the range of cells including data that you want to play.</p>
     <p>2. Click the "Play" button. You will hear the sound.</p>
   </div>
   
-  <div class="block">
-    <b>Instruction for Sample Spreadsheet</b>
-    <p>1. Open <a href="https://docs.google.com/spreadsheets/d/1HDhnWcvu9TtGVaaxLb__tGRQIhmNEDDww9IvICYISr8">sound wave player - sample spreadsheet</a></p>
-    <p>2. Open "Sound Wave Player" sidebar by choosing "Add-ons > Sound Wave Player > Show Sidebar" for control.</p>
-    <p>3. Select all "A" column cells.</p>
-    <p>4. Click the "Play" button. You will hear the sound.</p>
-  </div>
+  <hr>
   
   <div class="block" id="button-bar">
-    <button type="button" class="blue" id="soundActionButton" onclick="soundAction();" title="sound action">Play</button>
+    <p><b>Control</b></p>
+    <div class="control-button">
+      <button type="button" class="blue" id="soundActionButton" onclick="soundAction();" title="sound action">Play</button>
+    </div>
+    <div id="controlLoading" class="display-none">
+      <svg viewBox="0 0 64 64"><g stroke-width="4" stroke-linecap="round"><line y1="12" y2="20" transform="translate(32,32) rotate(180)"><animate attributeName="stroke-opacity" dur="750ms" values="1;.85;.7;.65;.55;.45;.35;.25;.15;.1;0;1" repeatCount="indefinite"></animate></line><line y1="12" y2="20" transform="translate(32,32) rotate(210)"><animate attributeName="stroke-opacity" dur="750ms" values="0;1;.85;.7;.65;.55;.45;.35;.25;.15;.1;0" repeatCount="indefinite"></animate></line><line y1="12" y2="20" transform="translate(32,32) rotate(240)"><animate attributeName="stroke-opacity" dur="750ms" values=".1;0;1;.85;.7;.65;.55;.45;.35;.25;.15;.1" repeatCount="indefinite"></animate></line><line y1="12" y2="20" transform="translate(32,32) rotate(270)"><animate attributeName="stroke-opacity" dur="750ms" values=".15;.1;0;1;.85;.7;.65;.55;.45;.35;.25;.15" repeatCount="indefinite"></animate></line><line y1="12" y2="20" transform="translate(32,32) rotate(300)"><animate attributeName="stroke-opacity" dur="750ms" values=".25;.15;.1;0;1;.85;.7;.65;.55;.45;.35;.25" repeatCount="indefinite"></animate></line><line y1="12" y2="20" transform="translate(32,32) rotate(330)"><animate attributeName="stroke-opacity" dur="750ms" values=".35;.25;.15;.1;0;1;.85;.7;.65;.55;.45;.35" repeatCount="indefinite"></animate></line><line y1="12" y2="20" transform="translate(32,32) rotate(0)"><animate attributeName="stroke-opacity" dur="750ms" values=".45;.35;.25;.15;.1;0;1;.85;.7;.65;.55;.45" repeatCount="indefinite"></animate></line><line y1="12" y2="20" transform="translate(32,32) rotate(30)"><animate attributeName="stroke-opacity" dur="750ms" values=".55;.45;.35;.25;.15;.1;0;1;.85;.7;.65;.55" repeatCount="indefinite"></animate></line><line y1="12" y2="20" transform="translate(32,32) rotate(60)"><animate attributeName="stroke-opacity" dur="750ms" values=".65;.55;.45;.35;.25;.15;.1;0;1;.85;.7;.65" repeatCount="indefinite"></animate></line><line y1="12" y2="20" transform="translate(32,32) rotate(90)"><animate attributeName="stroke-opacity" dur="750ms" values=".7;.65;.55;.45;.35;.25;.15;.1;0;1;.85;.7" repeatCount="indefinite"></animate></line><line y1="12" y2="20" transform="translate(32,32) rotate(120)"><animate attributeName="stroke-opacity" dur="750ms" values=".85;.7;.65;.55;.45;.35;.25;.15;.1;0;1;.85" repeatCount="indefinite"></animate></line><line y1="12" y2="20" transform="translate(32,32) rotate(150)"><animate attributeName="stroke-opacity" dur="750ms" values="1;.85;.7;.65;.55;.45;.35;.25;.15;.1;0;1" repeatCount="indefinite"></animate></line></g></svg>
+    </div>
+    <div class="clear"></div>
   </div>
+
+  <div class="spacer10"></div>
   
-  <div class="spacer20"></div>
   <hr>
   
   <div class="block">
-    <b>Settings</b>
+    <p><b>Settings</b></p>
     <p>
       <input type="checkbox" id="loopCheckBox">
       <label for="loopCheckBox">Loop</label>
     </p>
   </div>
+  
+  <hr>
+      
+  <div id="sampleReady" class="display-none">
+    <p><b>Instruction for Sample</b></p>
+    <div><button type="button" id="sampleSheetLoadButton" onclick="sampleSheetLoad();" title="sample sheet load" class="display-none">Load Sample</button></div>
     
+    <div id="sampleLoading" class="display-none">
+      <svg viewBox="0 0 64 64"><g stroke-width="4" stroke-linecap="round"><line y1="12" y2="20" transform="translate(32,32) rotate(180)"><animate attributeName="stroke-opacity" dur="750ms" values="1;.85;.7;.65;.55;.45;.35;.25;.15;.1;0;1" repeatCount="indefinite"></animate></line><line y1="12" y2="20" transform="translate(32,32) rotate(210)"><animate attributeName="stroke-opacity" dur="750ms" values="0;1;.85;.7;.65;.55;.45;.35;.25;.15;.1;0" repeatCount="indefinite"></animate></line><line y1="12" y2="20" transform="translate(32,32) rotate(240)"><animate attributeName="stroke-opacity" dur="750ms" values=".1;0;1;.85;.7;.65;.55;.45;.35;.25;.15;.1" repeatCount="indefinite"></animate></line><line y1="12" y2="20" transform="translate(32,32) rotate(270)"><animate attributeName="stroke-opacity" dur="750ms" values=".15;.1;0;1;.85;.7;.65;.55;.45;.35;.25;.15" repeatCount="indefinite"></animate></line><line y1="12" y2="20" transform="translate(32,32) rotate(300)"><animate attributeName="stroke-opacity" dur="750ms" values=".25;.15;.1;0;1;.85;.7;.65;.55;.45;.35;.25" repeatCount="indefinite"></animate></line><line y1="12" y2="20" transform="translate(32,32) rotate(330)"><animate attributeName="stroke-opacity" dur="750ms" values=".35;.25;.15;.1;0;1;.85;.7;.65;.55;.45;.35" repeatCount="indefinite"></animate></line><line y1="12" y2="20" transform="translate(32,32) rotate(0)"><animate attributeName="stroke-opacity" dur="750ms" values=".45;.35;.25;.15;.1;0;1;.85;.7;.65;.55;.45" repeatCount="indefinite"></animate></line><line y1="12" y2="20" transform="translate(32,32) rotate(30)"><animate attributeName="stroke-opacity" dur="750ms" values=".55;.45;.35;.25;.15;.1;0;1;.85;.7;.65;.55" repeatCount="indefinite"></animate></line><line y1="12" y2="20" transform="translate(32,32) rotate(60)"><animate attributeName="stroke-opacity" dur="750ms" values=".65;.55;.45;.35;.25;.15;.1;0;1;.85;.7;.65" repeatCount="indefinite"></animate></line><line y1="12" y2="20" transform="translate(32,32) rotate(90)"><animate attributeName="stroke-opacity" dur="750ms" values=".7;.65;.55;.45;.35;.25;.15;.1;0;1;.85;.7" repeatCount="indefinite"></animate></line><line y1="12" y2="20" transform="translate(32,32) rotate(120)"><animate attributeName="stroke-opacity" dur="750ms" values=".85;.7;.65;.55;.45;.35;.25;.15;.1;0;1;.85" repeatCount="indefinite"></animate></line><line y1="12" y2="20" transform="translate(32,32) rotate(150)"><animate attributeName="stroke-opacity" dur="750ms" values="1;.85;.7;.65;.55;.45;.35;.25;.15;.1;0;1" repeatCount="indefinite"></animate></line></g></svg>
+    </div>
+    <div class="clear"></div> 
+    
+    <p><button type="button" id="sampleSheetOpenButton" onclick="sampleSheetOpen();" title="sample sheet open" class="display-none">Open Sample</button></p>
+    <div class="spacer10"></div>
+  </div>
+  
+  <div id="sampleEnabled" class="display-none">
+    <p><b>Instruction for Sample</b></p>
+    <p>1. Select all "A" column cells.</p>
+    <p>2. Click the "Play" button. You will hear the sound.</p>
+  </div>
+  
+  <div class="text-right">
+    <a href="https://en.wikipedia.org/wiki/Triangle_wave" target="_blank">Learn more about triangle wave sounds</a>
+  </div>
 </div>
 
 <script type="text/javascript">
-
+        
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
     var bufferSize = 4096;
@@ -52,8 +115,80 @@
     var dataSource = [];
     var dataLength = 0;
     var isLoop = false;
+    var sampleUrl = undefined;
     
-    function soundPlay(){
+    init();
+    
+    function init() {
+        setAllUIState(false);
+        sampleSpreadSheetCheck();
+    }
+    
+    function setAllUIState(bool) {
+        document.getElementById("loopCheckBox").disabled = !bool;
+        document.getElementById("sampleSheetLoadButton").disabled = !bool;
+        document.getElementById("soundActionButton").disabled = !bool;
+    }
+    
+    function sampleSpreadSheetCheck() {
+        google.script.run.withSuccessHandler(getSampleSpreadSheetInfoSuccess).withFailureHandler(getSampleSpreadSheetInfoFailure).getSampleSpreadSheetInfo();
+    }
+    
+    function getSampleSpreadSheetInfoSuccess(values) {
+        var info = JSON.parse(values);
+        if (!info) {
+            getSampleSpreadSheetInfoFailure('sample info error');
+            return;
+        }
+        var url = info[0]["isExists"];
+        var isIn = info[0]["isIn"];
+        if (url) {
+            if (isIn) {
+                document.getElementById("sampleEnabled").className = "block";
+            } else {
+                sampleUrl = url;
+                document.getElementById("sampleSheetOpenButton").className = "block";
+                document.getElementById("sampleReady").className = "block";
+            }
+        } else {
+            document.getElementById("sampleSheetLoadButton").className = "block";
+            document.getElementById("sampleReady").className = "block";
+        }
+        setAllUIState(true);
+    }
+    
+    function getSampleSpreadSheetInfoFailure(error) {
+        alert(error);
+        setAllUIState(true);
+    }
+    
+    function sampleSheetLoad() {
+        document.getElementById("sampleLoading").className = "block";
+        document.getElementById("sampleSheetLoadButton").disabled = true;
+        google.script.run.withSuccessHandler(sampleSheetLoadSuccess).withFailureHandler(sampleSheetLoadFailure).loadSampleSheet();
+    }
+    
+    function sampleSheetLoadSuccess(url) {
+        sampleUrl = url;
+        document.getElementById("sampleSheetOpenButton").className = "block";
+        document.getElementById("sampleLoading").className = "display-none";
+    }
+    
+    function sampleSheetLoadFailure(error) {
+        alert(error);
+        document.getElementById("sampleSheetLoadButton").disabled = false;
+        document.getElementById("sampleLoading").className = "display-none";
+    }
+    
+    function sampleSheetOpen() {
+        if (!sampleUrl) {
+            alert('sample url error');
+            return;
+        }
+        window.open(sampleUrl, "_blank");
+    }
+    
+    function soundPlay() {
         isLoop = document.getElementById("loopCheckBox").checked;
         node = context.createScriptProcessor(bufferSize, numInputs, numOutputs);
         node.onaudioprocess = function(e) {
@@ -65,7 +200,7 @@
                 i++;
                 phase++;
                 if (phase >= dataLength) {
-                    if(isLoop) {
+                    if (isLoop) {
                         phase = 0;
                     } else {
                         isEnd = true;
@@ -82,7 +217,7 @@
         document.getElementById("soundActionButton").disabled = false;
     }
     
-    function soundStop(){
+    function soundStop() {
         phase = 0;
         dataSource = [];
         node.disconnect();
@@ -96,16 +231,17 @@
             document.getElementById("soundActionButton").innerText = "Play";
             soundStop();
         } else {
+            document.getElementById("controlLoading").className = "block";
             document.getElementById("soundActionButton").innerText = "Stop";
             soundDataLoad();
         }
     }
     
     function soundDataLoad() {
-        google.script.run.withSuccessHandler(success).withFailureHandler(failure).getActiveCell();
+        google.script.run.withSuccessHandler(soundDataLoadSuccess).withFailureHandler(soundDataLoadFailure).getActiveCell();
     }
     
-    function success(values) {
+    function soundDataLoadSuccess(values) {
         dataSource = JSON.parse(values);
         dataLength = dataSource.length;
         if (dataLength > 0) {
@@ -114,12 +250,14 @@
             document.getElementById("soundActionButton").disabled = false;
             document.getElementById("soundActionButton").innerText = "Play";
         }
+        document.getElementById("controlLoading").className = "display-none";
     }
     
-    function failure(error) {
+    function soundDataLoadFailure(error) {
         alert(error);
         document.getElementById("soundActionButton").disabled = false;
         document.getElementById("soundActionButton").innerText = "Play";
+        document.getElementById("controlLoading").className = "display-none";
     }
     
 </script>
