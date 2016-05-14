@@ -1,5 +1,5 @@
 # google-spreadsheet-addon.sound_wave_player
-sound wave player for google spreadsheet.
+[sound wave player for google spreadsheet](https://chrome.google.com/webstore/detail/sound-wave-player/cnaclkbhfoieodgpkhgnabhblffkmccg "sound wave player for google spreadsheet")
 
 # issues
 changing the data immediately, to reflect the sound.
